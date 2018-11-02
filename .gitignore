@@ -1,0 +1,4 @@
+!.gitignore
+!pages/
+!components/
+node_modules

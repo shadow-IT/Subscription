@@ -1,0 +1,23 @@
+{
+	"services": [{
+		"name": "testService1",
+		"url": "https://httpstat.us/200",
+		"contact": "avery@gmail.com",
+		"cadence": 3000
+	},{
+		"name": "testService2",
+		"url": "https://httpstat.us/200",
+		"contact": "avery@gmail.com",
+		"cadence": 3000
+	},{
+		"name": "testService3",
+		"url": "https://httpstat.us/200",
+		"contact": "avery@gmail.com",
+		"cadence": 3000
+	},{
+		"name": "testService4",
+		"url": "https://httpstat.us/400",
+		"contact": "avery@gmail.com",
+		"cadence": 3000
+	}]
+}

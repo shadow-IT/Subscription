@@ -1,0 +1,20 @@
+{
+  "name": "Subscription",
+  "version": "1.0.0",
+  "description": "A service that provides all of the subscribed services.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "NODE_ENV=production node server.js",
+    "image": "docker build -t shadowit/subscription . --no-cache"
+  },
+  "author": "Avery Lindley <develop.lindley@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.8",
+    "mongoose": "^5.3.4",
+    "redis": "^2.8.0"
+  }
+}
