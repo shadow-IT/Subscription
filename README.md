@@ -1,4 +1,5 @@
 # Subscription :heavy_check_mark: ✔️
+[![Build Status](https://travis-ci.org/shadow-IT/Subscription.svg?branch=master)](https://travis-ci.org/shadow-IT/Subscription)
 
 ## Purpose
 
