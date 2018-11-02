@@ -1,55 +1,9 @@
 const mongodb = require('mongodb');
 const config = require('./db');
+const properties = require('./properties.json')
 const client = mongodb.MongoClient;
 
-client.connect(config.DB, function(err, db) {
-    if(err) {
-        console.log('database is not connected')
-    }
-    else {
-        console.log('connected!!')
-    }
-});
-
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://mongo/test');
-var historySchema = new mongoose.Schema({
-	status: Number,
-	text: String,
-	details: Object
-});
-var History = mongoose.model('History', historySchema);
-
-var subscriptionSchema = new mongoose.Schema({
-	id: Number,
-	name: String,
-	contact: String,
-	url: String,
-	cadence: Number,
-	history: [historySchema],
-	latest: historySchema
-});
-
-subscriptionSchema.methods.announce = function() {
-	console.log('A new sub has been created for',this.name);
-}
-
-var Subscription = mongoose.model('Subscription', subscriptionSchema);
-
-/*
-kittySchema.methods.speak = function () {
-  var greeting = this.name
-    ? "Meow name is " + this.name
-    : "I don't have a name";
-  console.log(greeting);
-}
-
-var Kitten = mongoose.model('Kitten', kittySchema);
-
-var fluffy = new Kitten({ name: 'fluffy' });
-fluffy.speak(); // "Meow name is fluffy"
-*/
-
+let Subscription = null;
 
 exports.size = function(callback) {
 	// client.dbsize(function(error, result) {
@@ -66,11 +20,12 @@ exports.set = function(subInfo, callback) {
 	Subscription.create(subInfo, function(err, results) {
 		if(err) {
 			console.log(err)
+			callback(500, 'Error saving data.')
 			throw err
 		} else {
 			console.log('results set:',results)
+			callback(200, results.id)
 		}
-
 	});
 }
 
@@ -88,4 +43,51 @@ exports.getAllSubs = async function(callback) {
 		// console.log('Found a subscription for',sub.name);
 		callback(subs);
 	})
+}
+
+exports.init = function() {
+	client.connect(config.DB, function(err, db) {
+		if(err) {
+			console.log('database is not connected')
+		}
+		else {
+			console.log('connected!!')
+		}
+	});
+
+	const mongoose = require('mongoose');
+	mongoose.connect('mongodb://mongo/test');
+	var historySchema = new mongoose.Schema({
+		status: Number,
+		text: String,
+		details: Object
+	});
+	var History = mongoose.model('History', historySchema);
+
+	var subscriptionSchema = new mongoose.Schema({
+		id: Number,
+		name: String,
+		contact: String,
+		url: String,
+		cadence: Number,
+		history: [historySchema],
+		latest: historySchema
+	});
+
+	subscriptionSchema.methods.announce = function() {
+		console.log('A new sub has been created for',this.name);
+	}
+
+	Subscription = mongoose.model('Subscription', subscriptionSchema);
+
+	properties.services.map(service => {
+		const subInfo = {
+			name: service.name,
+			url: service.url,
+			contact: service.contact,
+			cadence: service.cadence
+		}
+	
+		exports.set(subInfo, (result) => res.send(result)) 
+	});
 }

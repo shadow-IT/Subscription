@@ -1,34 +1,23 @@
 var express = require('express');
 var bodyParser = require('body-parser')
-let properties = require('./properties.json')
-let { set, size, get, getAllSubs } = require('./subscriptions.js')
+let { set, size, get, getAllSubs, init } = require('./subscriptions.js')
 var app = express();
-var bodyParser = require('body-parser')
-const PORT = 3003
+app.port = 3003
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: true
 }));
 
-// TODO REMOVEME this will duplicate entries if the service is started up more than once.
-properties.services.map(service => {
-	const subInfo = {
-		name: service.name,
-		url: service.url,
-		contact: service.contact,
-		cadence: service.cadence
-	}
-
-	set(subInfo, (result) => res.send(result)) 
-});
+init();
 
 
 app.get('/', function(req, res){
-	res.send('Hello Subscription!\n' + properties);
+	res.send('Hello Subscription!');
 });
 
 app.get('/health' , function(req, res) {
+	// TODO check if DB is available?
 	res.sendStatus(200)
 })
 
@@ -38,11 +27,6 @@ app.get('/api', function(req, res) {
 
 app.get('/api/subscribers', async function(req, res) {
 	console.log('Providing ALL of the subscriptions.')
-	// TODO 
-	// res.json({result :[{
-	// 	subscriptionName: 'testService1',
-	// 	cadence: 1500,
-	// }]})
 	getAllSubs( (result) => res.send(result) );
 })
 
@@ -70,5 +54,6 @@ app.post('/api/:serviceName', function(req, res) {
 	set(subInfo, (result) => res.send(result)) 
 })
 
-console.log('Listening on port:',PORT)
-app.listen(PORT);
+app.listen(app.port, () => console.log(`Cadence listening on port ${app.port}!`))
+
+module.exports = app; // For testing.
