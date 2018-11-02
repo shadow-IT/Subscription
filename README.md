@@ -5,13 +5,13 @@
 **To provide subscription information for all of the service endpoints. This includes the URL where the health checks occur, the regions where the endpoint needs to be checked, and the types of checks wanted to run the health check.**
 
 ## API
-| method	| resource			| params						| result	|
-| ---		| ---				| ---							| ---	|
-| GET 		| /health 			| N/a 							| none or 200	|
-| GET		| /api				| N/a							| TODO	|
-| GET		| /api/:serviceName	| params.serviceName			| TODO	|
-| GET		| /api/properties	| N/a							| TODO	|
-| POST		| /api/:serviceName	| params.serviceName, body.url	| TODO	|
+| method	| resource		| params			| result	|
+| ---		| ---			| ---				| ---		|
+| GET 		| /health 		| N/a 				| none or 200	|
+| GET		| /api			| N/a				| TODO		|
+| GET		| /api/:serviceName	| params.serviceName		| TODO		|
+| GET		| /api/properties	| N/a				| TODO		|
+| POST		| /api/:serviceName	| params.serviceName, body.url	| TODO		|
 
 
 ## Usage
